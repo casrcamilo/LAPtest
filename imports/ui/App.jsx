@@ -1,11 +1,10 @@
 import React from 'react';
-import { Hello } from './Hello.jsx';
-import { Info } from './Info.jsx';
+import { Typography } from '@material-ui/core'
 
 export const App = () => (
-  <div>
-    <h1>Welcome to Meteor!</h1>
-    <Hello/>
-    <Info/>
-  </div>
+    <>
+        <Typography variant="h1" component="h2">
+            Hola
+        </Typography>
+    </>
 );
