@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles/';
 import { Button, IconButton } from '@material-ui/core';
 import firebase from '../../utils/firebaseConfiguration.js';
 
+/** API */
+import { Users } from '../../api/users';
+
 /** Icons */
 import { Icon, InlineIcon } from '@iconify/react';
 import google from '@iconify/icons-mdi/google';
@@ -29,25 +32,33 @@ const useStyles = makeStyles(theme => ({
 export default LoginButton = () => {
     const classes = useStyles();
 
-    facebookLogin = () => {
+    facebookProvider = () => {
         let provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then( result => {
-            console.log(result);            
-        })
+        login(provider);
     }
 
-    googleLogin = () => {
+    googleProvider = () => {
         let provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then( result => {
-            console.log(result);   
-            firebase.auth().currentUser.getIdToken(true).then( idToken => {
-                console.log(idToken)
-                // Send token to your backend via HTTPS
-                // ...
-            }).catch( error => {
-                console.log(error)
-            });         
-        })
+        login(provider);
+    }
+
+    login = provider => {
+        firebase.auth().signInWithPopup(provider).then( result => {  
+            if ( Users.findOne({_id: result.user.uid}) ){
+                console.log("existe");
+            } else {
+                console.log("no existe");
+                Users.insert({
+                    _id: result.user.uid,
+                    auth_provider: result.credential.providerId,
+                    name: result.user.displayName,
+                    profile_img: result.user.photoURL,
+                    email: result.user.email
+                })
+            }
+        }).catch( error => {
+            console.log(error)
+        });         
     }
 
 
@@ -56,7 +67,7 @@ export default LoginButton = () => {
             <Button  
                 variant="contained"
                 className={classes.Button_LoginFacebook}
-                onClick={facebookLogin}
+                onClick={facebookProvider}
                 startIcon={<InlineIcon icon={facebook}/>}
             >
                 Ingresar Con Facebook
@@ -64,7 +75,7 @@ export default LoginButton = () => {
             <Button  
                 variant="contained"
                 className={classes.Button_LoginGoogle}
-                onClick={googleLogin}
+                onClick={googleProvider}
                 startIcon={<InlineIcon icon={google}/>}
             >
                 Ingresar Con Google
