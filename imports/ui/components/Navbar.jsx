@@ -3,6 +3,9 @@ import React from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles/';
 import { AppBar, Typography, Toolbar, Button } from '@material-ui/core'
 
+/** Components */
+import LoginButton from './LoginButton'
+
 /** Styles */
 import theme from '../../styles/Theme';
 
@@ -32,18 +35,8 @@ export default Navbar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Recomendaciones
                     </Typography>
-                    <Button color="secondary" 
-                            variant="outlined"
-                            className={classes.Button_Login}
-                    >
-                        Sign Up
-                    </Button>
-                    <Button color="secondary" 
-                            variant="contained"
-                            className={classes.Button_Login}
-                    >
-                        Login
-                    </Button>
+                    <LoginButton/>
+ 
                 </Toolbar>
             </AppBar>
         </ThemeProvider>
