@@ -3,8 +3,8 @@ import { Typography } from '@material-ui/core'
 
 export const App = () => (
     <>
-        <Typography variant="h1" component="h2">
-            Hola
+        <Typography variant="h3" component="h2">
+            Hola Mundo
         </Typography>
     </>
 );
