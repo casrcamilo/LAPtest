@@ -1,10 +1,12 @@
 /** Libraries */
 import React from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles/';
-import { AppBar, Typography, Toolbar, Button } from '@material-ui/core'
+import { AppBar, Typography, Toolbar } from '@material-ui/core';
+import { connect } from 'react-redux'
 
 /** Components */
 import LoginButton from './LoginButton'
+import DisplayUser from './DisplayUser'
 
 /** Styles */
 import theme from '../../styles/Theme';
@@ -13,19 +15,14 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
     title: {
         flexGrow: 1,
     },
-    Button_Login:{
-        marginLeft: theme.spacing(2)
-    }
 }));
 
-export default Navbar = () => {
-
+const Navbar = ( props ) => {
+    const { user } = props;
+    const hasUser = Object.keys(user).length > 0;
     const classes = useStyles();
 
     return(
@@ -35,11 +32,19 @@ export default Navbar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Recomendaciones
                     </Typography>
-                    <LoginButton/>
- 
+                    {hasUser
+                        ? <DisplayUser />
+                        : <LoginButton />
+                    }
                 </Toolbar>
             </AppBar>
         </ThemeProvider>
         
     )
 };
+
+const mapStateToProps = state => {
+    return { user: state.user }
+};
+
+export default connect( mapStateToProps, null )(Navbar);

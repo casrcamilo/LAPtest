@@ -15,7 +15,10 @@
     "meteor-node-stubs": "^1.0.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-router-dom": "^5.1.2"
+    "react-google-maps": "^9.4.5",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5"
   },
   "meteor": {
     "mainModule": {

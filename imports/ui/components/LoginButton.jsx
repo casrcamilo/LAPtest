@@ -3,9 +3,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles/';
 import { Button, IconButton } from '@material-ui/core';
 import firebase from '../../utils/firebaseConfiguration.js';
+import { connect } from 'react-redux';
 
-/** API */
+
+/** API & Utils*/
 import { Users } from '../../api/users';
+import { loginRequest } from '../../actions'
 
 /** Icons */
 import { Icon, InlineIcon } from '@iconify/react';
@@ -29,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default LoginButton = () => {
+const LoginButton = ( props ) => {
     const classes = useStyles();
 
     facebookProvider = () => {
@@ -43,24 +46,31 @@ export default LoginButton = () => {
     }
 
     login = provider => {
-        firebase.auth().signInWithPopup(provider).then( result => {  
-            if ( Users.findOne({_id: result.user.uid}) ){
-                console.log("existe");
+        firebase.auth().signInWithPopup(provider).then( result => {
+            // Get data
+            let { uid, displayName, photoURL, email } = result.user;
+            let { providerId } = result.credential
+
+            // the user already exists?
+            if ( Users.findOne({_id: uid}) ){
+                //set user in store
+                props.loginRequest( Users.findOne({_id: uid}) )
             } else {
-                console.log("no existe");
+                //insert new user in Mongodb
                 Users.insert({
-                    _id: result.user.uid,
-                    auth_provider: result.credential.providerId,
-                    name: result.user.displayName,
-                    profile_img: result.user.photoURL,
-                    email: result.user.email
+                    _id: uid,
+                    providerId,
+                    displayName,
+                    photoURL,
+                    email
                 })
+                //set user in store
+                props.loginRequest( Users.findOne({_id: uid}) )
             }
         }).catch( error => {
             console.log(error)
         });         
     }
-
 
     return(
         <>
@@ -72,6 +82,7 @@ export default LoginButton = () => {
             >
                 Ingresar Con Facebook
             </Button>
+            
             <Button  
                 variant="contained"
                 className={classes.Button_LoginGoogle}
@@ -83,3 +94,9 @@ export default LoginButton = () => {
         </>
     )
 };
+
+const mapDispatchToProps = {
+    loginRequest,
+}
+
+export default connect(null, mapDispatchToProps)(LoginButton);
