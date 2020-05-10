@@ -13,7 +13,8 @@
     "@material-ui/icons": "^4.9.1",
     "meteor-node-stubs": "^1.0.0",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "react-router-dom": "^5.1.2"
   },
   "meteor": {
     "mainModule": {
