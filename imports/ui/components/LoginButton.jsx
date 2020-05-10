@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 
 
 /** API & Utils*/
-import { Users } from '../../api/users';
+import { Users } from '../../api/Users';
 import { loginRequest } from '../../actions'
 
 /** Icons */
-import { Icon, InlineIcon } from '@iconify/react';
+import { InlineIcon } from '@iconify/react';
 import google from '@iconify/icons-mdi/google';
 import facebook from '@iconify/icons-mdi/facebook';
 

@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
     },
+    AppBar:{
+        height: '10vh'
+    }
 }));
 
 const Navbar = ( props ) => {
@@ -27,8 +30,8 @@ const Navbar = ( props ) => {
 
     return(
         <ThemeProvider theme={theme}>
-            <AppBar position="static">
-                <Toolbar>
+            <AppBar position="static" >
+                <Toolbar className={classes.Appbar}>
                     <Typography variant="h6" className={classes.title}>
                         Recomendaciones
                     </Typography>

@@ -1,4 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { LinksCollection } from '/imports/api/links';
 
-import '../imports/api/users.js';
+import '../imports/api/Users.js';
+import '../imports/api/Shops.js';

@@ -17,6 +17,9 @@ import '../imports/styles/main.css'
 /** Initial State */
 const InitialState = {
   "user": {},
+  "shops": {},
+  "shopSelected": {},
+  "openShopDetails": false
 }
 
 /** Create store */
