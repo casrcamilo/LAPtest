@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     },
     Paper:{
         height: '70vh',
-        width: '15vw',
         position: 'absolute',
         top: '15vh',
         left: '0.5vw',

@@ -30,8 +30,19 @@ const InitialState = {
   "defaultCenter": { 
     "lat": 4.666342, 
     "lng": -74.060677 
-  }
+  },
+  "newShop":{
+    "shopName": "",
+    "shopType": "",
+    "lat": 4.666342, 
+    "lng": -74.060677, 
+  },
 }
+
+/* "pointSelected": { 
+  "lat": 4.666342, 
+  "lng": -74.060677 
+}, */
 
 /** Create store */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

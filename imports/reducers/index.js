@@ -29,7 +29,30 @@ const reducer = (state, action) => {
             return{
                 ...state,
                 defaultCenter: action.payload,
-            }           
+            }    
+        case 'SET_NEW_SHOP_COORDINATES':
+            var data = { ...action.payload }
+            return{
+                ...state,
+                newShop: {
+                    ...state.newShop, 
+                    ...data
+                }
+            } 
+        case 'SET_NEW_SHOP_DATA':
+            var data = { ...action.payload }
+            return{
+                ...state,
+                newShop: {
+                    ...state.newShop, 
+                    ...data
+                }
+            }     
+        case 'CLEAR_SHOP_DATA':
+            return{
+                ...state,
+                newShop: {...state.defaultCenter, ...action.payload}
+            }     
         default:
             return state;
 

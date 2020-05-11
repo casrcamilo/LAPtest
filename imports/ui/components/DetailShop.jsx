@@ -31,10 +31,7 @@ const DetailShop = ({ shop, openShopDetails }) => {
             <IconButton className={classes.CloseIcon} onClick={exitClick}>
                 <CloseIcon fontSize="small" />
             </IconButton>
-            <Typography component="h6">
-                Shop
-                {shop.name}
-            </Typography>
+            <Typography></Typography>
         </Container>
     )
 }
