@@ -17,3 +17,13 @@ export const openShopDetails = payload => ({
     type: 'OPEN_SHOP_DETAILS',
     payload,
 })
+
+export const openAddShopForm = payload => ({
+    type: 'OPEN_ADD_SHOP_FORM',
+    payload,
+})
+
+export const setDefaultCenter = payload => ({
+    type: 'SET_DEFAULT_CENTER',
+    payload,
+})

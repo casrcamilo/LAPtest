@@ -20,6 +20,16 @@ const reducer = (state, action) => {
                 ...state,
                 openShopDetails: action.payload,
             }
+        case 'OPEN_ADD_SHOP_FORM':
+            return{
+                ...state,
+                openAddShopForm: action.payload,
+            }
+        case 'SET_DEFAULT_CENTER':
+            return{
+                ...state,
+                defaultCenter: action.payload,
+            }           
         default:
             return state;
 

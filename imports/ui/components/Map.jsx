@@ -1,26 +1,35 @@
 /** Libraries */
 import React from 'react';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker } from 'react-google-maps'
-import MarkList from './MarkList'
+import MarkList from './MarkList';
+import { connect } from 'react-redux';
 
 /** Icons */
 //import markerPin from '../../assets/images/pin.png'
 
 // 4.666342, -74.060677
-const Map = () => {
+const Map = ({ defaultCenter, openForm }) => {
 
     return (
         <GoogleMap 
             defaultZoom={15}
-            defaultCenter={{ lat: 4.666342, lng: -74.060677 }}  
+            center={defaultCenter}   
+   
         >
-            <MarkList />
+            {!openForm && <MarkList />}
         </GoogleMap>
 
     );
 }
 
-export default withScriptjs(
+const mapStateToProps = ( state ) => {
+    return {
+        openForm: state.openAddShopForm,
+        defaultCenter: state.defaultCenter
+    }
+};
+
+export default connect(mapStateToProps, null)(withScriptjs(
     withGoogleMap(Map) 
-);
+));
 

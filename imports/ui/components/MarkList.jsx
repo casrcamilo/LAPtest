@@ -1,23 +1,24 @@
 /** Libraries */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Marker } from 'react-google-maps';
 import { connect } from 'react-redux'
 import { withTracker } from 'meteor/react-meteor-data';
 
 /** API & Utils */
 import { Shops } from '../../api/Shops';
-import { addShopSelected, openShopDetails } from '../../actions'
+import { addShopSelected, openShopDetails, setDefaultCenter } from '../../actions'
 
-const MarkList = ({ shops, addShopSelected, openShopDetails }) => {
+const MarkList = ({ shops, addShopSelected, openShopDetails, setDefaultCenter }) => {
     const [ shopClicked, setShopClicked ] = useState(null);
-
+  
     useEffect( () => {
         addShopSelected(shopClicked)
     },[shopClicked])
-
+    
     handleClick = ( shop ) => {
-        setShopClicked(shop)
-        openShopDetails(true)
+        setShopClicked(shop);
+        setDefaultCenter({'lat': shop.lat, 'lng': shop.lng})
+        openShopDetails(true);
     }
 
     return (
@@ -27,7 +28,7 @@ const MarkList = ({ shops, addShopSelected, openShopDetails }) => {
                     <Marker 
                         key={shop._id} 
                         position={{ lat: shop.lat, lng: shop.lng }} 
-                        onClick={ () => handleClick(shop)}
+                        onClick={ () => handleClick( shop )}
                     >
                     </Marker>
 
@@ -39,7 +40,8 @@ const MarkList = ({ shops, addShopSelected, openShopDetails }) => {
 
 const mapDispatchToProps = {
     addShopSelected,
-    openShopDetails
+    openShopDetails,
+    setDefaultCenter
 }
 
 export default connect(null, mapDispatchToProps)(withTracker(() =>{

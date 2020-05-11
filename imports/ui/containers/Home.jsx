@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 /** Components */
 import Map from  '../components/Map';
 import PopupDetailShop from '../components/PopupDetailShop'
+import AddShop from '../components/AddShop'
 
 /** API & Utils */
 import credentials from '../../utils/credentialsGoogleMaps'
@@ -15,7 +16,7 @@ const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${credential
 /** Styles */
 const useStyles = makeStyles(theme => ({
     ContainerMap: {
-        height: '90vh',
+        height: '93vh',
         margin: 0,
         padding: 0,
     },
@@ -36,6 +37,8 @@ const Home = ({ user, openShopdetails }) => {
             />
 
             { openShopdetails && <PopupDetailShop/> }
+
+            { hasUser && <AddShop/> }
         </>
     )
 }

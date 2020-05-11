@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles/';
 import { Container, Typography, IconButton } from '@material-ui/core';
 
+/** API & Utils */
+import { openAddShopForm } from '../../actions'
+
 /** Icons */
 import CloseIcon from '@material-ui/icons/Close';
-
-/** API & Utils */
-import { openShopDetails } from '../../actions'
 
 /** Styles */
 const useStyles = makeStyles(theme => ({
@@ -19,11 +19,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DetailShop = ({ shop, openShopDetails }) => {
-    const classes = useStyles();
+const AddShopForm = ({ openAddShopForm }) => {
+    const classes = useStyles(); 
 
     exitClick = () => {
-        openShopDetails(false);
+        openAddShopForm(false);
     }
 
     return (
@@ -32,21 +32,14 @@ const DetailShop = ({ shop, openShopDetails }) => {
                 <CloseIcon fontSize="small" />
             </IconButton>
             <Typography component="h6">
-                Shop
-                {shop.name}
+                holii
             </Typography>
         </Container>
     )
 }
 
-const mapStatetoProps = state => {
-    return {
-        shop: state.shopSelected
-    }
+const mapDispatchtoProps = {
+    openAddShopForm
 }
 
-const mapDispatchToProps = {
-    openShopDetails,
-}
-
-export default connect(mapStatetoProps, mapDispatchToProps)(DetailShop)
+export default connect(null, mapDispatchtoProps)(AddShopForm);

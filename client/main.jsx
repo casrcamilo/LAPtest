@@ -16,10 +16,21 @@ import '../imports/styles/main.css'
 
 /** Initial State */
 const InitialState = {
-  "user": {},
+  "user": {
+    "_id": "3wcRmI6KYwfuY55hA0I5CFLP8Kf1",
+    "providerId": "facebook.com",
+    "displayName": "Camilo Sosa",
+    "photoURL": "https://graph.facebook.com/1357162091339692/picture",
+    "email": null
+  },
   "shops": {},
   "shopSelected": {},
-  "openShopDetails": false
+  "openShopDetails": false,
+  "openAddShopForm": false,
+  "defaultCenter": { 
+    "lat": 4.666342, 
+    "lng": -74.060677 
+  }
 }
 
 /** Create store */
