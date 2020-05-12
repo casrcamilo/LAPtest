@@ -16,13 +16,7 @@ import '../imports/styles/main.css'
 
 /** Initial State */
 const InitialState = {
-  "user": {
-    "_id": "3wcRmI6KYwfuY55hA0I5CFLP8Kf1",
-    "providerId": "facebook.com",
-    "displayName": "Camilo Sosa",
-    "photoURL": "https://graph.facebook.com/1357162091339692/picture",
-    "email": null
-  },
+  "user": {},
   "shops": {},
   "shopSelected": {},
   "openShopDetails": false,
