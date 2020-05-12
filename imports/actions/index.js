@@ -42,3 +42,23 @@ export const clearShopData = payload => ({
     type: 'CLEAR_SHOP_DATA',
     payload,
 });
+
+export const setOpenNewRatingCard = payload => ({
+    type: 'SET_OPEN_NEW_RATING_CARD',
+    payload,
+});
+
+export const setActualRatings = payload => ({
+    type: 'SET_ACTUAL_RATINGS',
+    payload,
+});
+
+export const setCommentEditable = payload => ({
+    type: 'SET_COMMENT_EDITABLE',
+    payload,
+});
+
+export const setCommentToEdit = payload => ({
+    type: 'SET_COMMENT_TO_EDIT',
+    payload,
+});

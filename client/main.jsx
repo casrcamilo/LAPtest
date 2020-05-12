@@ -37,6 +37,9 @@ const InitialState = {
     "lat": 4.666342, 
     "lng": -74.060677, 
   },
+  "openNewRatingCard": false,
+  "commentEditable":false,
+  "commentToEdit":"",
 }
 
 /* "pointSelected": { 

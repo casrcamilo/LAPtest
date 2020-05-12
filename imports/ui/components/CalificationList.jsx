@@ -1,7 +1,7 @@
 /** Libraries */
 import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 /** Components */
 import Comment from './Comment'
@@ -9,11 +9,11 @@ import Comment from './Comment'
 /** API & Utils */
 import { Califications } from '../../api/Califications';
 
-const CalificationList = ({ shopSelected, califications }) => {
+const CalificationList = ({ shopSelected,  ratings }) => {
     return (
-        califications.map( calification => {
+        ratings.map( rating => {
             return (
-                <Comment key={calification._id} calificationData={calification} />
+                <Comment key={rating._id} ratingData={rating} />
             )
         })
     )
@@ -26,7 +26,9 @@ const mapStateToProps = ( state ) => {
 }
 
 export default connect(mapStateToProps, null)(withTracker(({ shopSelected }) =>{
-    return {   
-        califications: Califications.find({ shop_id: shopSelected._id}, { sort: { calificated: -1 } }).fetch(),
+    return {
+        ratings : Califications.find(
+            { shop_id: shopSelected._id}, 
+            { sort: { calificatedAt: -1 } }).fetch(),
     };
 })(CalificationList));

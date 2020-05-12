@@ -7,6 +7,7 @@ import Rating from 'react-rating'
 
 /** Components */
 import CalificationList from './CalificationList'
+import NewRatingCard from './NewRatingCard'
 
 /** Icons */
 import CloseIcon from '@material-ui/icons/Close';
@@ -16,7 +17,7 @@ import StarIcon from '@material-ui/icons/Star';
 /** API & Utils */
 import { Califications } from '../../api/Califications';
 import { shopTypesList } from '../../utils/shoptypes'
-import { openShopDetails } from '../../actions'
+import { openShopDetails, setOpenNewRatingCard } from '../../actions'
 
 /** Styles */
 const useStyles = makeStyles(theme => ({
@@ -85,16 +86,29 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DetailShop = ({ activeUser, shop, openShopDetails }) => {
+const DetailShop = ( props) => {
+    const { 
+        activeUser, 
+        shop, 
+        openShopDetails, 
+        openNewRatingCard,
+        setOpenNewRatingCard
+    } = props
     const classes = useStyles();
 
     exitClick = () => {
         openShopDetails(false);
+        setOpenNewRatingCard(false);
     }
 
     handleChangeRating = ( value ) => {
         value.preventDefault
         console.log(value);
+    }
+
+    addRating = ( e ) => {
+        e.preventDefault
+        setOpenNewRatingCard(true);
     }
 
     return (
@@ -147,9 +161,6 @@ const DetailShop = ({ activeUser, shop, openShopDetails }) => {
                         </Typography>
                     </Container>
 
-
-
-
                 </Grid>
             </Grid>
             <Typography variant="h5" align="left" display="block">
@@ -157,20 +168,28 @@ const DetailShop = ({ activeUser, shop, openShopDetails }) => {
             </Typography>
         </Container>
         <Container className={classes.ContainerComments}>
+            { // Open a new card to rating and write the comment
+                openNewRatingCard 
+                && <NewRatingCard/>
+            }
             <CalificationList/>
         </Container>
 
         {/* The user already has a rating of this shop? */
-        !Califications.findOne({ 'author.id': activeUser._id, shop_id : shop._id })
-            &&  <Container className={classes.ContainerMakeComment}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Calificar
-                    </Button>
-                </Container>
-        }
+            !Califications.findOne({ 'author.id': activeUser._id, shop_id : shop._id }) 
+            /* The User has open a comment card? */
+            ?   !openNewRatingCard
+                &&  <Container className={classes.ContainerMakeComment}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={ ( e ) => addRating(e)}
+                        >
+                            Calificar
+                        </Button>
+                    </Container>
+            : null
+            }
 
         </>
     )
@@ -179,12 +198,14 @@ const DetailShop = ({ activeUser, shop, openShopDetails }) => {
 const mapStatetoProps = state => {
     return {
         activeUser: state.user,
-        shop: state.shopSelected
+        shop: state.shopSelected,
+        openNewRatingCard : state.openNewRatingCard
     }
 }
 
 const mapDispatchToProps = {
     openShopDetails,
+    setOpenNewRatingCard,
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(DetailShop)

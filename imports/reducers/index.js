@@ -14,16 +14,20 @@ const reducer = (state, action) => {
             return{
                 ...state,
                 shopSelected: action.payload,
+                openNewRatingCard: false
             }
         case 'OPEN_SHOP_DETAILS':
             return{
                 ...state,
                 openShopDetails: action.payload,
+                openAddShopForm: false,
             }
         case 'OPEN_ADD_SHOP_FORM':
             return{
                 ...state,
                 openAddShopForm: action.payload,
+                openShopDetails: false,
+                shopSelected: {}
             }
         case 'SET_DEFAULT_CENTER':
             return{
@@ -52,10 +56,25 @@ const reducer = (state, action) => {
             return{
                 ...state,
                 newShop: {...state.defaultCenter, ...action.payload}
-            }     
+            }    
+        case 'SET_OPEN_NEW_RATING_CARD':
+            return{
+                ...state,
+                openNewRatingCard: action.payload
+            }  
+        case 'SET_COMMENT_EDITABLE':
+            return{
+                ...state,
+                commentEditable: action.payload
+            }  
+        case 'SET_COMMENT_TO_EDIT':
+            return{
+                ...state,
+                commentToEdit: action.payload
+            }  
         default:
             return state;
-
+            
     }
 }
 export default reducer;
