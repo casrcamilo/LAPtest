@@ -138,7 +138,11 @@ const Comment  = ({ ratingData,
             <Card className={classes.CardMain}>
                 <CardHeader
                     avatar={
-                        <Avatar alt="Profile Image" src={photoURL} aria-label="recipe" className={classes.avatar} />
+                        <Avatar alt="Profile Image" 
+                                src={photoURL} 
+                                aria-label="recipe" 
+                                className={classes.avatar} 
+                        />
                     }
                     action={activeUser._id === _id 
                             && <IconButton onClick={handleClick} aria-label="settings">

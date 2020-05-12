@@ -15,7 +15,7 @@ const MarkList = ({ shops, addShopSelected, openShopDetails, setDefaultCenter })
         addShopSelected(shopClicked)
     },[shopClicked])
     
-    handleClick = ( shop ) => {
+    handleSelectMarkerClick = ( shop ) => {
         setShopClicked(shop);
         setDefaultCenter({'lat': shop.lat, 'lng': shop.lng})
         openShopDetails(true);
@@ -28,7 +28,7 @@ const MarkList = ({ shops, addShopSelected, openShopDetails, setDefaultCenter })
                     <Marker 
                         key={shop._id} 
                         position={{ lat: shop.lat, lng: shop.lng }} 
-                        onClick={ () => handleClick( shop )}
+                        onClick={ () => handleSelectMarkerClick( shop )}
                     >
                     </Marker>
 

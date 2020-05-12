@@ -1,4 +1,4 @@
-export const shopTypesList = [
+export const defaultShopTypesList = [
     {
         value: "restaurant",
         label: "restaurante",

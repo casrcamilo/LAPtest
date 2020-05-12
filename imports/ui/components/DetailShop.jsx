@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles/';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Container, Grid, Typography, IconButton, Avatar, Icon, Button, } from '@material-ui/core';
 import Rating from 'react-rating' 
 
@@ -11,13 +12,15 @@ import NewRatingCard from './NewRatingCard'
 
 /** Icons */
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 
 /** API & Utils */
 import { Califications } from '../../api/Califications';
-import { shopTypesList } from '../../utils/shoptypes'
-import { openShopDetails, setOpenNewRatingCard } from '../../actions'
+import { Shops } from '../../api/Shops';
+import { defaultShopTypesList } from '../../utils/shoptypes'
+import { openShopDetails, setOpenNewRatingCard, clearShopData } from '../../actions'
 
 /** Styles */
 const useStyles = makeStyles(theme => ({
@@ -27,9 +30,15 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'white',
         height:'35%'
     },
-    ContainerCloseButton:{
-        textAlign: 'right',
+    ContainerHead:{
+        display: 'flex',
         padding: 0
+    },
+    TitleHead:{
+        flex: '1',
+    },
+    DeleteButton:{
+        color: 'red'
     },
     ContainerShopInfo:{
         padding: 0,
@@ -86,72 +95,91 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DetailShop = ( props) => {
+const DetailShop = ( props ) => {
     const { 
         activeUser, 
-        shop, 
         openShopDetails, 
         openNewRatingCard,
-        setOpenNewRatingCard
+        setOpenNewRatingCard,
+        clearShopData,
+        hasRating, 
+        shop
     } = props
+    const { shopType, shopName, rating, lat, lng, userOwnerId } = shop
+
+    const hasUser = Object.keys(activeUser).length > 0;
     const classes = useStyles();
 
     exitClick = () => {
         openShopDetails(false);
         setOpenNewRatingCard(false);
-    }
+    };
+
+    deleteShopSubmit = () => {
+        //Delete shop in DB
+        try {
+            Shops.remove(
+                {_id: shop._id},
+            );
+            openShopDetails(false);
+            clearShopData({})
+            
+        } catch (error) {
+            throw new Meteor.Error(error, [error.reason], [error.details]);
+        } 
+    };
 
     handleChangeRating = ( value ) => {
         value.preventDefault
         console.log(value);
-    }
+    };
 
     addRating = ( e ) => {
         e.preventDefault
         setOpenNewRatingCard(true);
-    }
+    };
 
     return (
         <>
         <Container className={classes.ContainerMain}>
-            <Container className={classes.ContainerCloseButton}>
-                <Grid container>
-                    <Grid item xs={10}>
-                        <Typography variant="h4" align="left" display="block">
-                            Información
-                        </Typography>
-                    </Grid>   
-                    <Grid item xs={2}>
-                        <IconButton className={classes.CloseButton} onClick={exitClick}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>                  
-                    </Grid> 
-                </Grid>
+            <Container className={classes.ContainerHead}>
+                <Typography variant="h4" align="left" display="block" className={classes.TitleHead}>
+                    Información
+                </Typography>
+                {/* If the current user is shop's owner */}
+                {activeUser._id === userOwnerId
+                    &&  <IconButton className={classes.DeleteButton} onClick={deleteShopSubmit} >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>  
+                }
+                <IconButton className={classes.CloseButton} onClick={exitClick}>
+                    <CloseIcon fontSize="small" />
+                </IconButton>                  
             </Container>
             <Grid container className={classes.ContainerShopInfo} spacing={2} >
                 <Grid item xs={3}>
-                        {shopTypesList.map( shopType =>
-                            shopType.value === shop.shopType 
-                            &&  <Avatar key={shopType.icon} className={classes.AvatarShopType} style={{backgroundColor: shopType.color}}>
+                        {defaultShopTypesList.map( defaultShopType =>
+                            defaultShopType.value === shopType 
+                            &&  <Avatar key={defaultShopType.icon} className={classes.AvatarShopType} style={{backgroundColor: defaultShopType.color}}>
                                     <Icon className={classes.ShopTypeIcon}>
-                                        {shopType.icon}
+                                        {defaultShopType.icon}
                                     </Icon>
                                 </Avatar>
                         )}
                 </Grid>
                 <Grid item xs={9}>
                     <Typography variant="h5" align="left" display="block">
-                        {shop.shopName}
+                        {shopName}
                     </Typography>
                     <Typography variant="caption" align="left" className={classes.LabelCoordinates}>
-                        {shop.lat}, {shop.lat}
+                        {lat}, {lng}
                     </Typography>
 
                     <Container className={classes.ContainerRating}>
                         <Rating
                             emptySymbol={<StarBorderIcon className={classes.IconRating}/>}
                             fullSymbol={<StarIcon className={classes.IconRating}/>}
-                            initialRating={4.5}
+                            initialRating={rating}
                             readonly
                             fractions={2}
                             onChange={( value ) => handleChangeRating(value)}
@@ -168,15 +196,15 @@ const DetailShop = ( props) => {
             </Typography>
         </Container>
         <Container className={classes.ContainerComments}>
-            { // Open a new card to rating and write the comment
-                openNewRatingCard 
+            {/* Open a new card to rating and write the comment */}
+            {openNewRatingCard 
                 && <NewRatingCard/>
             }
             <CalificationList/>
         </Container>
 
-        {/* The user already has a rating of this shop? */
-            !Califications.findOne({ 'author.id': activeUser._id, shop_id : shop._id }) 
+        {/* The user is Loggedin and already has a rating of this shop? */ }
+        {hasUser && hasRating 
             /* The User has open a comment card? */
             ?   !openNewRatingCard
                 &&  <Container className={classes.ContainerMakeComment}>
@@ -188,8 +216,8 @@ const DetailShop = ( props) => {
                             Calificar
                         </Button>
                     </Container>
-            : null
-            }
+            : null 
+        } 
 
         </>
     )
@@ -205,7 +233,13 @@ const mapStatetoProps = state => {
 
 const mapDispatchToProps = {
     openShopDetails,
+    clearShopData,
     setOpenNewRatingCard,
 }
 
-export default connect(mapStatetoProps, mapDispatchToProps)(DetailShop)
+export default connect(mapStatetoProps, mapDispatchToProps)(withTracker(({ activeUser, shop }) =>{
+   
+    return {
+        hasRating: !Boolean(Califications.findOne({ 'author._id': activeUser._id, shop_id : shop._id })),
+    };
+})(DetailShop));

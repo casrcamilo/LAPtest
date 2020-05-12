@@ -52,10 +52,7 @@ const LoginButton = ( props ) => {
             let { providerId } = result.credential
 
             // the user already exists?
-            if ( Users.findOne({_id: uid}) ){
-                //set user in store
-                props.loginRequest( Users.findOne({ _id: uid }) )
-            } else {
+            if ( !Users.findOne({_id: uid}) ){
                 //insert new user in Mongodb
                 Users.insert({
                     _id: uid,
@@ -64,9 +61,9 @@ const LoginButton = ( props ) => {
                     photoURL,
                     email
                 })
-                //set user in store
-                props.loginRequest( Users.findOne({ _id: uid }) )
             }
+            //set user in store
+            props.loginRequest( Users.findOne({ _id: uid }) )
         }).catch( error => {
             console.log(error)
         });         

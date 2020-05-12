@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 
 /** API & Utils */
-import { shopTypesList } from '../../utils/shoptypes'
+import { defaultShopTypesList } from '../../utils/shoptypes'
 import { Shops } from '../../api/Shops';
 import { openAddShopForm, setNewShopData, clearShopData } from '../../actions'
 
@@ -63,7 +63,7 @@ const AddShopForm = ({ user, newShop, openAddShopForm, setNewShopData, clearShop
 
     handleSubmit = () => {
         //Create a new Shop
-        Shops.insert({ ...newShop, 'userId': user._id})
+        Shops.insert({ ...newShop, 'userOwnerId': user._id, 'rating': 0})
 
         //Clear shop data
         clearShopData({})
@@ -122,7 +122,7 @@ const AddShopForm = ({ user, newShop, openAddShopForm, setNewShopData, clearShop
                             onChange={ ( e ) => setShopType(e.target.value) }
                             onBlur={ ( e ) => handleBlur(e) }
                     >
-                        {shopTypesList.map( type => {
+                        {defaultShopTypesList.map( type => {
                             return (
                                 <MenuItem key={type.value} value={type.value}>
                                     <ListItem>
