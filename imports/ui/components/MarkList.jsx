@@ -1,5 +1,5 @@
 /** Libraries */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Marker } from 'react-google-maps';
 import { connect } from 'react-redux'
 import { withTracker } from 'meteor/react-meteor-data';

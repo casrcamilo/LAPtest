@@ -15,22 +15,20 @@ import {
     Button,
     InputAdornment,
     ListItemIcon,
+    Icon,
     ListItemText,
     ListItem
 } from '@material-ui/core';
 
 /** API & Utils */
+import { shopTypesList } from '../../utils/shoptypes'
 import { Shops } from '../../api/Shops';
 import { openAddShopForm, setNewShopData, clearShopData } from '../../actions'
 
 /** Icons */
 import CloseIcon from '@material-ui/icons/Close';
 import RoomIcon from '@material-ui/icons/Room';
-import LocalDiningIcon from '@material-ui/icons/LocalDining';
-import LocalBarIcon from '@material-ui/icons/LocalBar';
-import LocalCafeIcon from '@material-ui/icons/LocalCafe';
-import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
-import LocalHotelIcon from '@material-ui/icons/LocalHotel';
+
 
 /** Styles */
 import theme from '../../styles/Theme';
@@ -48,33 +46,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const shopTypesList = [
-    {
-        value: "restaurant",
-        label: "restaurante",
-        icon: <LocalDiningIcon/>
-    },
-    {
-        value: "pub",
-        label: "Bar",
-        icon: <LocalBarIcon/>
-    },
-    {
-        value: "coffe",
-        label: "Café",
-        icon: <LocalCafeIcon/>
-    },
-    {
-        value: "market",
-        label: "Mercado",
-        icon: <LocalGroceryStoreIcon/>
-    },
-    {
-        value: "hotel",
-        label: "Hotel",
-        icon: <LocalHotelIcon/>
-    },
-]
 
 const AddShopForm = ({ user, newShop, openAddShopForm, setNewShopData, clearShopData }) => {
     const classes = useStyles(); 
@@ -156,7 +127,7 @@ const AddShopForm = ({ user, newShop, openAddShopForm, setNewShopData, clearShop
                                 <MenuItem key={type.value} value={type.value}>
                                     <ListItem>
                                         <ListItemIcon>
-                                            {type.icon}
+                                            <Icon> {type.icon} </Icon>
                                         </ListItemIcon>
                                         <ListItemText primary={type.label} />
                                     </ListItem>

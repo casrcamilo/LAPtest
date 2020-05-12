@@ -54,7 +54,7 @@ const LoginButton = ( props ) => {
             // the user already exists?
             if ( Users.findOne({_id: uid}) ){
                 //set user in store
-                props.loginRequest( Users.findOne({_id: uid}) )
+                props.loginRequest( Users.findOne({ _id: uid }) )
             } else {
                 //insert new user in Mongodb
                 Users.insert({
@@ -65,7 +65,7 @@ const LoginButton = ( props ) => {
                     email
                 })
                 //set user in store
-                props.loginRequest( Users.findOne({_id: uid}) )
+                props.loginRequest( Users.findOne({ _id: uid }) )
             }
         }).catch( error => {
             console.log(error)
