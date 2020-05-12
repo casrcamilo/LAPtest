@@ -238,7 +238,6 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(withTracker(({ activeUser, shop }) =>{
-   
     return {
         hasRating: !Boolean(Califications.findOne({ 'author._id': activeUser._id, shop_id : shop._id })),
     };
