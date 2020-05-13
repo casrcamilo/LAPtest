@@ -2,6 +2,7 @@
 import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { connect } from 'react-redux';
+import { Meteor } from 'meteor/meteor';
 
 /** Components */
 import Comment from './Comment'
@@ -26,6 +27,8 @@ const mapStateToProps = ( state ) => {
 }
 
 export default connect(mapStateToProps, null)(withTracker(({ shopSelected }) =>{
+    Meteor.subscribe('califications');
+
     return {
         ratings : Califications.find(
             { shop_id: shopSelected._id}, 
