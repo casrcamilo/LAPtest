@@ -7,7 +7,7 @@ import { Container, Grid, Typography, IconButton, Avatar, Icon, Button, } from '
 import Rating from 'react-rating' 
 
 /** Components */
-import CalificationList from './CalificationList'
+import RatingList from './RatingList'
 import NewRatingCard from './NewRatingCard'
 
 /** Icons */
@@ -17,7 +17,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 
 /** API & Utils */
-import { Califications } from '../../api/Califications';
+import { Ratings } from '../../api/ratings';
 import { Shops } from '../../api/Shops';
 import { defaultShopTypesList } from '../../utils/shoptypes'
 import { openShopDetails, setOpenNewRatingCard, clearShopData } from '../../actions'
@@ -200,7 +200,7 @@ const DetailShop = ( props ) => {
             {openNewRatingCard 
                 && <NewRatingCard/>
             }
-            <CalificationList/>
+            <RatingList/>
         </Container>
 
         {/* The user is Loggedin and already has a rating of this shop? */ }
@@ -239,6 +239,6 @@ const mapDispatchToProps = {
 
 export default connect(mapStatetoProps, mapDispatchToProps)(withTracker(({ activeUser, shop }) =>{
     return {
-        hasRating: !Boolean(Califications.findOne({ 'author._id': activeUser._id, shop_id : shop._id })),
+        hasRating: !Boolean(Ratings.findOne({ 'author._id': activeUser._id, shop_id : shop._id })),
     };
 })(DetailShop));

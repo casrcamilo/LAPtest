@@ -12,7 +12,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 
 /** API & Utils */
-import { Califications } from '../../api/Califications';
+import { Ratings } from '../../api/ratings';
 import { setOpenNewRatingCard } from '../../actions'
 
 /** Styles */
@@ -76,7 +76,7 @@ const Comment  = ({ activeUser, shopSelected, setOpenNewRatingCard }) => {
 
         //Add rating to DB
         try {
-            Califications.insert(document);
+            Ratings.insert(document);
             setOpenNewRatingCard(false)
             
         } catch (error) {

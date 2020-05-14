@@ -6,7 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { connect } from 'react-redux';
 
 /** API & Utils */
-import { Califications } from '../../api/Califications';
+import { Ratings } from '../../api/Ratings';
 import { setOpenNewRatingCard } from '../../actions'
 
 /** Styles */
@@ -37,7 +37,7 @@ const MakeRating = ({ activeUser, shopSelected, openNewRatingCard, setOpenNewRat
     return (
         <>
             <p>si</p> 
-            {!Boolean(Califications.findOne({ 'author._id': activeUser._id, shop_id : shopSelected._id }))
+            {!Boolean(Ratings.findOne({ 'author._id': activeUser._id, shop_id : shopSelected._id }))
                 && <Container className={classes.ContainerMakeComment}>
                     <Button
                         variant="contained"

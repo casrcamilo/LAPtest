@@ -6,7 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 /** API & Utils */
 import { Shops } from '../../api/Shops';
-import { defaultShopTypesList } from '../../utils/shoptypes'
+import { defaultShopTypesList } from '../../utils/shoptypes';
 import { addShopSelected, openShopDetails, setDefaultCenter } from '../../actions'
 
 /**  */

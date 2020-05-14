@@ -3,85 +3,90 @@ import React, { useState } from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { Fab, Paper } from '@material-ui/core';
 import { connect } from 'react-redux';
-
-/** Components */
-import AddShopForm from './AddShopForm'
-
-/** API & Utils */
-import { openAddShopForm } from '../../actions'
+import PropTypes from 'prop-types';
 
 /** Icons */
 import AddIcon from '@material-ui/icons/Add';
 
+/** Components */
+import AddShopForm from './AddShopForm';
+
+/** API & Utils */
+import { openAddShopForm } from '../../actions';
+
 /** Styles */
 import theme from '../../styles/Theme';
 
-const useStyles = makeStyles(theme => ({
-    AddButton:{
-        position: 'absolute',
-        bottom: '3vh',
-        left: '1.5vw',
-        height: 56,
-    },
-    Paper:{
-        height: '70vh',
-        position: 'absolute',
-        top: '15vh',
-        left: '0.5vw',
-        padding: '10px'
-    }
+const useStyles = makeStyles(() => ({
+  AddButton: {
+    position: 'absolute',
+    bottom: '3vh',
+    left: '1.5vw',
+    height: 56,
+  },
+  Paper: {
+    height: '70vh',
+    position: 'absolute',
+    top: '15vh',
+    left: '0.5vw',
+    padding: '10px',
+  },
 }));
 
+/* eslint-disable no-shadow */
 const AddShop = ({ openForm, openAddShopForm }) => {
-    const classes = useStyles(); 
-    const [ hoverButton, setHoverButton ] = useState(false)
+/* es-lint-enable */
 
-    handleClick = () => {
-        openAddShopForm(true)
-    };
+  const classes = useStyles();
+  const [hoverButton, setHoverButton] = useState(false);
 
-    handleEnterHover = () => {
-        setHoverButton(true);
-    };
+  const handleClick = () => {
+    openAddShopForm(true);
+  };
 
-    handleLeaveHover = () => {
-        setHoverButton(false);
-    };
+  const handleEnterHover = () => {
+    setHoverButton(true);
+  };
 
-    return (
-        <ThemeProvider theme={theme}>  
-            {openForm 
-            &&  <Paper 
-                    elevation={3} 
-                    children={<AddShopForm/>} 
-                    className={classes.Paper}
-                />
-            }     
-            <Fab 
-                color="primary" 
-                aria-label="add" 
-                className={classes.AddButton}
-                onClick={() => handleClick()}
-                onMouseEnter={( ) => handleEnterHover( )}
-                onMouseLeave={( ) => handleLeaveHover( )}
-                variant={hoverButton ? "extended" : "round"}
+  const handleLeaveHover = () => {
+    setHoverButton(false);
+  };
 
-            >
-                <AddIcon />
-                {hoverButton ? "Agregar Establecimiento" : null}
-            </Fab>
-        </ThemeProvider>
-    )
-}
+  return (
+    <ThemeProvider theme={theme}>
+      {openForm
+        && (
+          <Paper elevation={3} className={classes.Paper}>
+            <AddShopForm />
+          </Paper>
+        )}
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.AddButton}
+        onClick={() => handleClick()}
+        onMouseEnter={() => handleEnterHover()}
+        onMouseLeave={() => handleLeaveHover()}
+        variant={hoverButton ? 'extended' : 'round'}
+      >
+        <AddIcon />
+        {hoverButton ? 'Agregar Establecimiento' : null}
+      </Fab>
+    </ThemeProvider>
+  );
+};
 
-const mapStateToProps = ( state ) => {
-    return{
-        openForm: state.openAddShopForm,
-    }
-}
+const mapStateToProps = (state) => ({
+  openForm: state.openAddShopForm,
+});
 
 const mapDispatchToProps = {
-    openAddShopForm,
-}
+  openAddShopForm,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddShop);
+
+AddShop.propTypes = {
+  openForm: PropTypes.bool.isRequired,
+  openAddShopForm: PropTypes.func.isRequired,
+};

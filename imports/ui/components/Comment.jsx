@@ -10,7 +10,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 
 /** API & Utils */
-import { Califications } from '../../api/Califications';
+import { Ratings } from '../../api/ratings';
 import { setOpenNewRatingCard, setCommentEditable, setCommentToEdit } from '../../actions'
 
 /** Styles */
@@ -100,7 +100,7 @@ const Comment  = ({ ratingData,
 
         //Update rating to DB
         try {
-            Califications.update(
+            Ratings.update(
                 {_id: commentToEdit},
                 { '$set': document}
             );
@@ -121,7 +121,7 @@ const Comment  = ({ ratingData,
     deleteComment = () => {
         //Delete rating in DB
         try {
-            Califications.remove(
+            Ratings.remove(
                 {_id: rating_id},
             );
             setCommentEditable(false);
