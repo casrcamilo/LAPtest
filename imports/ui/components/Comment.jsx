@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import Rating from 'react-rating';
 import { connect } from 'react-redux';
+import { Meteor } from 'meteor/meteor'
 
 /** Icons */
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -72,6 +73,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Comment = ({
+  place,
   ratingData,
   activeUser,
   commentToEdit,
@@ -81,6 +83,7 @@ const Comment = ({
   updateCommentToEdit
 }) => {
   const ratingId = ratingData._id
+  const placeId = place._id
   const { calificatedAt, comment, rating } = ratingData;
   const { _id, displayName, photoURL } = ratingData.author;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -111,17 +114,9 @@ const Comment = ({
       rating: temporalRating,
     };
 
-    // Update rating to DB
-    try {
-      Ratings.update(
-        { _id: commentToEdit },
-        { $set: document },
-      );
-      updateCommentEditable(false);
-      updateCommentToEdit('');
-    } catch (error) {
-      throw new Meteor.Error('error', 'reason for error');
-    }
+    Meteor.call('ratings.update', commentToEdit, placeId, document);
+    updateCommentEditable(false);
+    updateCommentToEdit('');
   };
 
   const editComment = () => {
@@ -238,6 +233,7 @@ const Comment = ({
 };
 
 const mapStateToProps = (state) => ({
+  place: state.placeSelected,
   activeUser: state.user,
   commentEditable: state.commentEditable,
   commentToEdit: state.commentToEdit,

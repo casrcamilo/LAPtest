@@ -75,7 +75,7 @@ const AddPlaceForm = ({
 
   const handleSubmit = () => {
     // Create a new Place
-    Places.insert({ ...newPlace, userOwnerId: user._id, rating: 0 });
+    Places.insert({ ...newPlace, userOwnerId: user._id, rate: 0 });
 
     // Clear place data
     deletePlaceData({});

@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import Rating from 'react-rating';
 import { connect } from 'react-redux';
+import { Meteor } from 'meteor/meteor';
 
 /** Icons */
 import StarBorderIcon from '@material-ui/icons/StarBorder';
@@ -81,14 +82,8 @@ const Comment = ({ activeUser, placeSelected, updateShowNewRatingCard }) => {
       comment: temporalComment,
       rating: temporalRating,
     };
-
-    // Add rating to DB
-    try {
-      Ratings.insert(document);
-      updateShowNewRatingCard(false);
-    } catch (error) {
-      throw new Meteor.Error('error', 'reason for error');
-    }
+    Meteor.call('ratings.insert', document);
+    updateShowNewRatingCard(false);
   };
 
   return (

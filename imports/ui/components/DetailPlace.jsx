@@ -98,13 +98,13 @@ const useStyles = makeStyles(() => ({
 const DetailPlace = (props) => {
   const {
     activeUser,
-    place,
+    placeDetails,
     openNewRatingCard,
     loadPlaceDetails,
     updateShowNewRatingCard,
     hasRating,
   } = props;
-  const { placeType, placeName, rating, lat, lng, userOwnerId } = place;
+  const { placeType, placeName, rate, lat, lng, userOwnerId } = placeDetails;
 
   const hasUser = Object.keys(activeUser).length > 0;
   const classes = useStyles();
@@ -180,13 +180,12 @@ const DetailPlace = (props) => {
               <Rating
                 emptySymbol={<StarBorderIcon className={classes.IconRating} />}
                 fullSymbol={<StarIcon className={classes.IconRating} />}
-                initialRating={rating}
+                initialRating={rate}
                 readonly
                 fractions={2}
-                onChange={(value) => handleChangeRating(value)}
               />
               <Typography variant="caption" align="left" className={classes.LabelRating}>
-                (4.5) 1 voto(s)
+                {`(${rate})`}
               </Typography>
             </Container>
           </Grid>
@@ -234,5 +233,6 @@ const mapDispatchToProps = {
 export default connect(mapStatetoProps, mapDispatchToProps)(withTracker(({ activeUser, place }) =>{
   return {
     hasRating: !(Ratings.findOne({ 'author._id': activeUser._id, place_id: place._id })),
+    placeDetails: Places.findOne({_id: place._id}),
   };
 })(DetailPlace));
