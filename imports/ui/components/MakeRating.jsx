@@ -2,69 +2,67 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles/';
 import { Container, Button } from '@material-ui/core';
-import { withTracker } from 'meteor/react-meteor-data';
 import { connect } from 'react-redux';
 
 /** API & Utils */
-import { Ratings } from '../../api/Ratings';
-import { setOpenNewRatingCard } from '../../actions'
+import { Ratings } from '../../api/ratings';
+import { updateShowNewRatingCard } from '../../actions';
 
 /** Styles */
-const useStyles = makeStyles(theme => ({
-    ContainerMakeComment:{
-        display: 'flex',
-        alignItems: 'center',   
-        height:'8%',
-        backgroundColor: 'white',
-        borderRadius: '0 0 10px 10px',
-        borderTop: '0.5px solid #e3e3e3',
-        '& button':{
-            display: 'block',
-            margin: 'auto'
-        }
-    }
+const useStyles = makeStyles(() => ({
+  ContainerMakeComment: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '8%',
+    backgroundColor: 'white',
+    borderRadius: '0 0 10px 10px',
+    borderTop: '0.5px solid #e3e3e3',
+    '& button':{
+      display: 'block',
+      margin: 'auto',
+    },
+  },
 }));
 
-const MakeRating = ({ activeUser, shopSelected, openNewRatingCard, setOpenNewRatingCard }) => {
+const MakeRating = ({
+  activeUser,
+  placeSelected,
+  openNewRatingCard,
+  updateShowNewRatingCard
+}) => {
+  const classes = useStyles();
 
-    const classes = useStyles();
+  const addRating = (e) => {
+    e.preventDefault;
+    updateShowNewRatingCard(true);
+  };
 
-    addRating = ( e ) => {
-        e.preventDefault
-        setOpenNewRatingCard(true);
-    }
+  return (
+    <>
+      {!(Ratings.findOne({ 'author._id': activeUser._id, place_id: placeSelected._id }))
+        && (
+          <Container className={classes.ContainerMakeComment}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e) => addRating(e)}
+            >
+              Calificar
+            </Button>
+          </Container>
+        )}
+    </>
+  );
+};
 
-    return (
-        <>
-            <p>si</p> 
-            {!Boolean(Ratings.findOne({ 'author._id': activeUser._id, shop_id : shopSelected._id }))
-                && <Container className={classes.ContainerMakeComment}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={ ( e ) => addRating(e)}
-                    >
-                        Calificar
-                    </Button>
-                </Container>
-            }
-
-
-        </>
-    )
-}
-
-const mapStateToProps = ( state ) => {
-    return {
-        activeUser: state.user,
-        shopSelected: state.shopSelected,
-        openNewRatingCard : state.openNewRatingCard
-    }
-}
+const mapStateToProps = (state) => ({
+  activeUser: state.user,
+  placeSelected: state.placeSelected,
+  openNewRatingCard: state.openNewRatingCard,
+});
 
 const mapDispatchToProps = {
-    setOpenNewRatingCard,
-}
+  updateShowNewRatingCard,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MakeRating);
-

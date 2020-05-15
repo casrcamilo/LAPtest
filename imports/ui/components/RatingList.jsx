@@ -10,7 +10,7 @@ import Comment from './Comment';
 /** API & Utils */
 import { Ratings } from '../../api/ratings';
 
-const RatingList = ({ shopSelected, ratings }) => {
+const RatingList = ({ placeSelected, ratings }) => {
   return (
     ratings.map((rating) => (
       <Comment key={rating._id} ratingData={rating} />
@@ -19,15 +19,15 @@ const RatingList = ({ shopSelected, ratings }) => {
 };
 
 const mapStateToProps = (state) => ({
-  shopSelected: state.shopSelected,
+  placeSelected: state.placeSelected,
 });
 
-export default connect(mapStateToProps, null)(withTracker(({ shopSelected }) => {
+export default connect(mapStateToProps, null)(withTracker(({ placeSelected }) => {
   Meteor.subscribe('ratings');
 
   return {
     ratings: Ratings.find(
-      { shop_id: shopSelected._id },
+      { place_id: placeSelected._id },
       { sort: { calificatedAt: -1 } },
     ).fetch(),
   };

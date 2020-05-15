@@ -26,9 +26,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import RoomIcon from '@material-ui/icons/Room';
 
 /** API & Utils */
-import { defaultShopTypesList } from '../../utils/shoptypes'
-import { Shops } from '../../api/Shops';
-import { openAddShopForm, setNewShopData, clearShopData } from '../../actions'
+import defaultPlacesTypesList from '../../utils/placeTypes';
+import { Places } from '../../api/places';
+import { updateShowPlaceForm, updateNewPlaceData, deletePlaceData } from '../../actions';
 
 /** Styles */
 import theme from '../../styles/Theme';
@@ -48,21 +48,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-const AddShopForm = ({
+/* eslint-disable no-shadow */
+const AddPlaceForm = ({
   user,
-  newShop,
-  /* eslint-disable no-shadow */
-  openAddShopForm,
-  setNewShopData,
-  clearShopData,
-  /* es-lint-enable */
+  newPlace,
+  updateShowPlaceForm,
+  updateNewPlaceData,
+  deletePlaceData
 }) => {
   const classes = useStyles();
-  const [shopName, setShopName] = useState(newShop.shopName);
-  const [shopType, setShopType] = useState(newShop.shopType);
+  const [placeName, setPlaceName] = useState(newPlace.placeName);
+  const [placeType, setPlaceType] = useState(newPlace.placeType);
   const [errorFields, setErrorFields] = useState({
-    shopName: false,
-    shopType: false,
+    placeName: false,
+    placeType: false,
   });
 
   const handleBlur = (e) => {
@@ -71,22 +70,22 @@ const AddShopForm = ({
     if (!value) {
       setErrorFields({ [name]: false });
     }
-    setNewShopData({ [name]: value });
+    updateNewPlaceData({ [name]: value });
   };
 
   const handleSubmit = () => {
-    // Create a new Shop
-    Shops.insert({ ...newShop, userOwnerId: user._id, rating: 0 });
+    // Create a new Place
+    Places.insert({ ...newPlace, userOwnerId: user._id, rating: 0 });
 
-    // Clear shop data
-    clearShopData({});
+    // Clear place data
+    deletePlaceData({});
 
     // Close Form Popup
-    openAddShopForm(false);
+    updateShowPlaceForm(false);
   };
 
   const exitClick = () => {
-    openAddShopForm(false);
+    updateShowPlaceForm(false);
   };
 
   return (
@@ -100,19 +99,19 @@ const AddShopForm = ({
         </Typography>
 
         <Typography variant="caption" align="left" display="block" gutterBottom>
-          {`${newShop.lat}, ${newShop.lng}`}
+          {`${newPlace.lat}, ${newPlace.lng}`}
         </Typography>
 
-        <FormControl required margin="normal" color="primary" fullWidth error={errorFields.shopName}>
-          <InputLabel htmlFor="form-shopName">Nombre del sitio</InputLabel>
+        <FormControl required margin="normal" color="primary" fullWidth error={errorFields.placeName}>
+          <InputLabel htmlFor="form-placeName">Nombre del sitio</InputLabel>
           <Input
-            id="form-shopName"
+            id="form-placeName"
             type="text"
-            name="shopName"
+            name="placeName"
             fullWidth
-            value={shopName}
-            onChange={(e) => setShopName(e.target.value)}
-            aria-describedby="form-shopName-errorText"
+            value={placeName}
+            onChange={(e) => setPlaceName(e.target.value)}
+            aria-describedby="form-placeName-errorText"
             onBlur={(e) => handleBlur(e)}
             variant="outlined"
             startAdornment={(
@@ -121,23 +120,23 @@ const AddShopForm = ({
               </InputAdornment>
             )}
           />
-          {errorFields.shopName && <FormHelperText id="form-shopName-errorText" error> Este campo es obligatorio </FormHelperText> }
+          {errorFields.placeName && <FormHelperText id="form-placeName-errorText" error> Este campo es obligatorio </FormHelperText> }
         </FormControl>
 
-        <FormControl required margin="normal" color="secondary" fullWidth error={errorFields.shopType}>
-          <InputLabel htmlFor="form-shopType">Tipo de establecimiento</InputLabel>
+        <FormControl required margin="normal" color="secondary" fullWidth error={errorFields.placeType}>
+          <InputLabel htmlFor="form-placeType">Tipo de establecimiento</InputLabel>
           <Select
-            id="form-shopType"
+            id="form-placeType"
             type="text"
-            name="shopType"
+            name="placeType"
             fullWidth
-            value={shopType}
-            defaultValue={newShop.shopType}
-            aria-describedby="form-shopType-errorText"
-            onChange={(e) => setShopType(e.target.value)}
+            value={placeType}
+            defaultValue={newPlace.placeType}
+            aria-describedby="form-placeType-errorText"
+            onChange={(e) => setPlaceType(e.target.value)}
             onBlur={(e) => handleBlur(e)}
           >
-            {defaultShopTypesList.map((type) => (
+            {defaultPlacesTypesList.map((type) => (
               <MenuItem key={type.value} value={type.value}>
                 <ListItem>
                   <ListItemIcon>
@@ -150,7 +149,7 @@ const AddShopForm = ({
               </MenuItem>
             ))}
           </Select>
-          {errorFields.shopType && <FormHelperText id="form-shopType-errorText" error>Por favor selecciona un valor</FormHelperText> }
+          {errorFields.placType && <FormHelperText id="form-placeType-errorText" error>Por favor selecciona un valor</FormHelperText> }
         </FormControl>
 
         <Button
@@ -168,22 +167,22 @@ const AddShopForm = ({
 };
 
 const mapStateToProps = (state) => ({
-  newShop: state.newShop,
+  newPlace: state.newPlace,
   user: state.user,
 });
 
 const mapDispatchtoProps = {
-  openAddShopForm,
-  setNewShopData,
-  clearShopData,
+  updateShowPlaceForm,
+  updateNewPlaceData,
+  deletePlaceData,
 };
 
-export default connect(mapStateToProps, mapDispatchtoProps)(AddShopForm);
+export default connect(mapStateToProps, mapDispatchtoProps)(AddPlaceForm);
 
-AddShopForm.propTypes = {
+AddPlaceForm.propTypes = {
   user: PropTypes.shape.isRequired,
-  newShop: PropTypes.shape.isRequired,
-  openAddShopForm: PropTypes.func.isRequired,
-  setNewShopData: PropTypes.func.isRequired,
-  clearShopData: PropTypes.func.isRequired,
+  newPlace: PropTypes.shape.isRequired,
+  updateShowPlaceForm: PropTypes.func.isRequired,
+  updateNewPlaceData: PropTypes.func.isRequired,
+  deletePlaceData: PropTypes.func.isRequired,
 };

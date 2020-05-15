@@ -1,4 +1,4 @@
 /* eslint-disable */
 import { Mongo } from 'meteor/mongo';
 
-export const Shops = new Mongo.Collection('shops');
+export const Places = new Mongo.Collection('places');

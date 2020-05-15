@@ -11,64 +11,64 @@ const reducer = (state, action) => {
         ...state,
         user: action.payload,
       };
-    case 'ADD_SHOP_SELECTED':
+    case 'UPDATE_PLACE_SELECTED':
       return {
         ...state,
-        shopSelected: action.payload,
+        placeSelected: action.payload,
         openNewRatingCard: false,
       };
-    case 'OPEN_SHOP_DETAILS':
+    case 'LOAD_PLACE_DETAILS':
       return {
         ...state,
-        openShopDetails: action.payload,
-        openAddShopForm: false,
+        openPlaceDetails: action.payload,
+        openAddPlaceForm: false,
       };
-    case 'OPEN_ADD_SHOP_FORM':
+    case 'UPDATE_SHOW_PLACE_FORM':
       return {
         ...state,
-        openAddShopForm: action.payload,
-        openShopDetails: false,
-        shopSelected: {},
+        openAddPlaceForm: action.payload,
+        openPlaceDetails: false,
+        placeSelected: {},
       };
-    case 'SET_DEFAULT_CENTER':
+    case 'UPDATE_DEFAULT_CENTER':
       return {
         ...state,
         defaultCenter: action.payload,
       };
-    case 'SET_NEW_SHOP_COORDINATES':
+    case 'UPDATE_NEW_PLACE_COORDINATES':
       data = { ...action.payload };
       return {
         ...state,
-        newShop: {
-          ...state.newShop,
+        newPlace: {
+          ...state.newPlace,
           ...data,
         },
       };
-    case 'SET_NEW_SHOP_DATA':
+    case 'UPDATE_NEW_PLACE_DATA':
       data = { ...action.payload };
       return {
         ...state,
-        newShop: {
-          ...state.newShop,
+        newPlace: {
+          ...state.newPlace,
           ...data,
         },
       };
-    case 'CLEAR_SHOP_DATA':
+    case 'DELETE_PLACE_DATA':
       return {
         ...state,
-        newShop: { ...state.defaultCenter, ...action.payload },
+        newPlace: { ...state.defaultCenter, ...action.payload },
       };
-    case 'SET_OPEN_NEW_RATING_CARD':
+    case 'UPDATE_SHOW_NEW_RATING_CARD':
       return {
         ...state,
         openNewRatingCard: action.payload,
       };
-    case 'SET_COMMENT_EDITABLE':
+    case 'UPDATE_COMMENT_EDITABLE':
       return {
         ...state,
         commentEditable: action.payload,
       };
-    case 'SET_COMMENT_TO_EDIT':
+    case 'UPDATE_COMMENT_TO_EDIT':
       return {
         ...state,
         commentToEdit: action.payload,

@@ -1,63 +1,67 @@
 /** Libraries */
 import React, { useState, useEffect } from 'react';
 import { Marker } from 'react-google-maps';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { withTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
 
 /** API & Utils */
-import { Shops } from '../../api/Shops';
-import { defaultShopTypesList } from '../../utils/shoptypes';
-import { addShopSelected, openShopDetails, setDefaultCenter } from '../../actions'
+import { Places } from '../../api/places';
+import defaultPlaceTypesList from '../../utils/placeTypes';
+import { updatePlaceSelected, loadPlaceDetails, updateDefaultCenter } from '../../actions';
 
-/**  */
+/* eslint-disable no-shadow */
+const MarkList = ({
+  places,
+  updatePlaceSelected,
+  loadPlaceDetails,
+  updateDefaultCenter,
+}) => {
+  // const [placeClicked, setPlaceClicked] = useState(null);
 
-const MarkList = ({ shops, addShopSelected, openShopDetails, setDefaultCenter }) => {
-    const [ shopClicked, setShopClicked ] = useState(null);
-  
-    useEffect( () => {
-        addShopSelected(shopClicked)
-    },[shopClicked])
-    
-    handleSelectMarkerClick = ( shop ) => {
-        setShopClicked(shop);
-        setDefaultCenter({'lat': shop.lat, 'lng': shop.lng})
-        openShopDetails(true);
-    }
+  const handleSelectMarkerClick = (place) => {
+    updatePlaceSelected(place);
+    updateDefaultCenter({ lat: place.lat, lng: place.lng });
+    loadPlaceDetails(true);
+  };
 
-    filterUrlShopTypes = ( shopType ) => {
-        var defaultShopType = defaultShopTypesList.filter(defaultShopType => {
-            return defaultShopType.value===shopType
-        })
-        return defaultShopType[0].url
-    }
+  const filterUrlPlacesTypes = (placeType) => {
+    const placeTypeFiltered = defaultPlaceTypesList.filter(
+      (defaultPlaceType) => defaultPlaceType.value === placeType,
+    );
+    return placeTypeFiltered[0].url;
+  };
 
-    return (
-        <>
-            {shops.map( shop => {                
-                let shopTypeUrl = filterUrlShopTypes(shop.shopType);
-                return (
-                    <Marker 
-                        key={shop._id} 
-                        position={{ lat: shop.lat, lng: shop.lng }} 
-                        onClick={ () => handleSelectMarkerClick( shop )}
-                        icon={{ url: shopTypeUrl, scaledSize: new google.maps.Size(32, 45) }}
-                    >
-                    </Marker>
-
-                )
-            })}
-        </>
-    )
-}
+  return (
+    <>
+      {places.map((place) => {
+        const placeTypeUrl = filterUrlPlacesTypes(place.placeType);
+        return (
+          <Marker
+            key={place._id}
+            position={{ lat: place.lat, lng: place.lng }}
+            onClick={() => handleSelectMarkerClick(place)}
+            icon={{ url: placeTypeUrl, scaledSize: new google.maps.Size(32, 45) }}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 const mapDispatchToProps = {
-    addShopSelected,
-    openShopDetails,
-    setDefaultCenter
-}
+  updatePlaceSelected,
+  loadPlaceDetails,
+  updateDefaultCenter,
+};
 
-export default connect(null, mapDispatchToProps)(withTracker(() =>{
-    return {
-        shops: Shops.find({}, { sort: { createdAt: -1 } }).fetch(),
-    };
-})(MarkList));
+export default connect(null, mapDispatchToProps)(withTracker(() => ({
+  places: Places.find({}, { sort: { createdAt: -1 } }).fetch(),
+}))(MarkList));
+
+MarkList.propTypes = {
+  places: PropTypes.shape.isRequired,
+  updatePlaceSelected: PropTypes.func.isRequired,
+  loadPlaceDetails: PropTypes.func.isRequired,
+  updateDefaultCenter: PropTypes.func.isRequired,
+};

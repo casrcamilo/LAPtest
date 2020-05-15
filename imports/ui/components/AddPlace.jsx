@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 
 /** Components */
-import AddShopForm from './AddShopForm';
+import AddPlaceForm from './AddPlaceForm';
 
 /** API & Utils */
-import { openAddShopForm } from '../../actions';
+import { updateShowPlaceForm } from '../../actions';
 
 /** Styles */
 import theme from '../../styles/Theme';
@@ -34,14 +34,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 /* eslint-disable no-shadow */
-const AddShop = ({ openForm, openAddShopForm }) => {
+const AddPlace = ({ openForm, updateShowPlaceForm }) => {
 /* es-lint-enable */
 
   const classes = useStyles();
   const [hoverButton, setHoverButton] = useState(false);
 
   const handleClick = () => {
-    openAddShopForm(true);
+    updateShowPlaceForm(true);
   };
 
   const handleEnterHover = () => {
@@ -57,7 +57,7 @@ const AddShop = ({ openForm, openAddShopForm }) => {
       {openForm
         && (
           <Paper elevation={3} className={classes.Paper}>
-            <AddShopForm />
+            <AddPlaceForm />
           </Paper>
         )}
       <Fab
@@ -77,16 +77,16 @@ const AddShop = ({ openForm, openAddShopForm }) => {
 };
 
 const mapStateToProps = (state) => ({
-  openForm: state.openAddShopForm,
+  openForm: state.openAddPlaceForm,
 });
 
 const mapDispatchToProps = {
-  openAddShopForm,
+  updateShowPlaceForm,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddShop);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPlace);
 
-AddShop.propTypes = {
+AddPlace.propTypes = {
   openForm: PropTypes.bool.isRequired,
-  openAddShopForm: PropTypes.func.isRequired,
+  updateShowPlaceForm: PropTypes.func.isRequired,
 };

@@ -1,51 +1,53 @@
 /** Libraries */
 import React from 'react';
-import { GoogleMap, withScriptjs, withGoogleMap, Marker } from 'react-google-maps'
-import MarkList from './MarkList';
+import {
+  GoogleMap,
+  withScriptjs,
+  withGoogleMap,
+  Marker,
+} from 'react-google-maps';
 import { connect } from 'react-redux';
+import MarkList from './MarkList';
 
 /** API & Utils */
-import { setNewShopCoordinates } from '../../actions'
+import { updateNewPlaceCoordinates } from '../../actions';
 
-/** Icons */
-//import markerPin from '../../assets/images/pin.png'
+const Map = ({
+  defaultCenter,
+  openForm,
+  updateNewPlaceCoordinates,
+  newPlace,
+}) => {
+  const handleLeftClick = (e) => {
+    const point = {
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    };
+    updateNewPlaceCoordinates(point);
+  };
 
-// 4.666342, -74.060677
-const Map = ({ defaultCenter, openForm, setNewShopCoordinates, newShop }) => {
+  return (
+    <GoogleMap
+      defaultZoom={15}
+      center={defaultCenter}
+      onClick={openForm ? (e) => handleLeftClick(e) : null}
+    >
+      {openForm ? <Marker position={{ lat: newPlace.lat, lng: newPlace.lng }} /> : <MarkList />}
+    </GoogleMap>
 
-    handleLeftClick = ( e ) => {
-        var point = {
-            'lat': e.latLng.lat(),
-            'lng': e.latLng.lng(),
-        };
-        setNewShopCoordinates(point);
-    }
-
-    return (
-        <GoogleMap 
-            defaultZoom={15}
-            center={defaultCenter} 
-            onClick={openForm ? ( e ) => handleLeftClick( e ) : null}
-        >
-            {openForm ? <Marker position={{ 'lat': newShop.lat, 'lng': newShop.lng }} /> : <MarkList />}
-        </GoogleMap>
-
-    );
-}
-
-const mapStateToProps = ( state ) => {
-    return {
-        openForm: state.openAddShopForm,
-        defaultCenter: state.defaultCenter,
-        newShop : state.newShop
-    }
+  );
 };
 
+const mapStateToProps = (state) => ({
+  openForm: state.openAddPlaceForm,
+  defaultCenter: state.defaultCenter,
+  newPlace: state.newPlace,
+});
+
 const mapDispatchToProps = {
-    setNewShopCoordinates,
-}
+  updateNewPlaceCoordinates,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withScriptjs(
-    withGoogleMap(Map) 
+  withGoogleMap(Map),
 ));
-
