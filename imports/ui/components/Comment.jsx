@@ -126,16 +126,9 @@ const Comment = ({
   };
 
   const deleteComment = () => {
-    // Delete rating in DB
-    try {
-      Ratings.remove(
-        { _id: ratingId },
-      );
-      updateCommentEditable(false);
-      updateCommentToEdit('');
-    } catch (error) {
-      throw new Meteor.Error(error, [error.reason], [error.details]);
-    }
+    Meteor.call('ratings.delete', ratingId, placeId);
+    updateCommentEditable(false);
+    updateCommentToEdit('');
   };
 
   return (

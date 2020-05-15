@@ -16,9 +16,13 @@ if (Meteor.isServer) {
             { $group: { _id: '$place_id', avg: { $avg: '$rating' } } },
           ])
           console.log(aggregateResult)
-          aggregateResult.map((avg) => {
-            Places.update({ _id: avg._id }, { $set: { 'rate': avg.avg }})
-          });
+          if (aggregateResult.length > 0){
+            aggregateResult.map((avg) => {
+              Places.update({ _id: avg._id }, { $set: { 'rate': avg.avg }})
+            });
+          } else {
+            Places.update({ _id: place }, { $set: { 'rate': 0 }})
+          }
         } catch (error) {
           console.log(error);
         }
@@ -34,7 +38,7 @@ Meteor.methods({
     try {
       Ratings.insert(rating);
     } catch (error) {
-      throw new Meteor.Error(Error, Error.details);
+      throw new Meteor.Error(error, [error.reason], [error.details]);
     }
 
     // Update rate of place
@@ -54,14 +58,32 @@ Meteor.methods({
         { $set: rating },
       );
     } catch (error) {
-      throw new Meteor.Error('error', 'reason for error');
+      throw new Meteor.Error(error, [error.reason], [error.details]);
     }
 
     // Update rate of place
     Meteor.call('updateRate', placeId, function(err, response) {
       return('updateRate')
 		});
-  }
+  },
+  'ratings.delete'(rateId, placeId) {
+    check(rateId, String);
+    check(placeId, String);
+    
+    // Delete rating in DB
+    try {
+      Ratings.remove(
+        { _id: rateId },
+      );
+    } catch (error) {
+      throw new Meteor.Error(error, [error.reason], [error.details]);
+    }
+
+    // Update rate of place
+    Meteor.call('updateRate', placeId, function(err, response) {
+      return('updateRate')
+		});
+  },  
   },
 );
 
